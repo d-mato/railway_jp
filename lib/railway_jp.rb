@@ -1,6 +1,6 @@
-require "railway_jp/version"
+require 'railway_jp/version'
+require 'railway_jp/station'
+require 'railway_jp/line'
 
 module RailwayJp
-  class Error < StandardError; end
-  # Your code goes here...
 end
