@@ -5,7 +5,6 @@ module RailwayJp
     MAPPINGS = {
       id: 'station_cd',
       name: 'station_name',
-      name_kanji: 'station_name_k',
       line_id: 'line_cd',
       prefecture_id: 'pref_cd',
       postcode: 'post',
@@ -13,9 +12,6 @@ module RailwayJp
       longitude: 'lon',
       latitude: 'lat',
     }.freeze
-
-    private_class_method :new
-    attr_reader *MAPPINGS.keys
 
     class << self
       def all
@@ -39,14 +35,21 @@ module RailwayJp
       end
     end
 
+    private_class_method :new
+    attr_reader *MAPPINGS.keys
+
     def initialize(row)
       MAPPINGS.each do |attr, column_name|
         instance_variable_set("@#{attr}", row[column_name])
       end
     end
 
-    # TODO
-    # def line
-    # end
+    def line
+      @line ||= Line.find(line_id)
+    end
+
+    def line_name
+      line&.name
+    end
   end
 end
