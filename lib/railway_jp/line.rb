@@ -1,3 +1,5 @@
+require 'csv'
+
 module RailwayJp
   class Line
     MAPPINGS = {
@@ -5,6 +7,8 @@ module RailwayJp
       name: 'line_name',
       color: 'line_color_c',
     }.freeze
+
+    include RailwayJp::Equality
 
     class << self
       def all

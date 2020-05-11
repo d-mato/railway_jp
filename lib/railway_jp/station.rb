@@ -13,6 +13,8 @@ module RailwayJp
       latitude: 'lat',
     }.freeze
 
+    include RailwayJp::Equality
+
     class << self
       def all
         @all ||= data.map { |row| new(row) }
