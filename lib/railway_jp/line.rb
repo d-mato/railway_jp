@@ -27,7 +27,7 @@ module RailwayJp
 
       # @return [CSV::Table]
       def data
-        @data ||= CSV.parse(File.open(File.join(__dir__, '../data', 'line.csv')), headers: true)
+        @data ||= CSV.read(File.join(__dir__, '..', 'data', 'line.csv'), headers: true, encoding: 'UTF-8')
       end
 
       def data_index_by_id

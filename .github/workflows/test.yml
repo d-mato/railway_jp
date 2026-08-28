@@ -29,3 +29,20 @@ jobs:
           bundler-cache: true
       - name: Run the default task
         run: bundle exec rake
+
+  locale:
+    runs-on: ubuntu-latest
+    name: Non-UTF-8 locale
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ruby
+          bundler-cache: true
+      - name: Run the default task with a non-UTF-8 default encoding
+        run: bundle exec rake
+        env:
+          LC_ALL: C
