@@ -38,8 +38,8 @@ RSpec.describe RailwayJp::Line do
     end
 
     it 'uniq' do
-      record1 = described_class.find('1130224')
-      record2 = described_class.find('1130224')
+      record1 = described_class.find('11302')
+      record2 = described_class.find('11302')
       expect([record1, record2].uniq.size).to be 1
     end
   end

@@ -4,7 +4,7 @@ module RailwayJp
   # Compares records by id, so the same record loaded twice is equal.
   module Equality
     def hash
-      id.hash
+      [self.class, id].hash
     end
 
     def eql?(other)
@@ -12,7 +12,7 @@ module RailwayJp
     end
 
     def ==(other)
-      id == other.id
+      other.instance_of?(self.class) && id == other.id
     end
   end
 end
