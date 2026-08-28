@@ -1,10 +1,21 @@
 # RailwayJp
 
-A library for providing Japanese railways and stations.
+[![Test](https://github.com/d-mato/railway_jp/actions/workflows/test.yml/badge.svg)](https://github.com/d-mato/railway_jp/actions/workflows/test.yml)
+[![Gem Version](https://img.shields.io/gem/v/railway_jp)](https://rubygems.org/gems/railway_jp)
+
+Japanese railway lines and stations as Ruby objects. The data ships inside the gem, so lookups need no database and no network.
+
+## Requirements
+
+Ruby 3.4 or newer.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+```console
+$ bundle add railway_jp
+```
+
+Or add it to your Gemfile by hand:
 
 ```ruby
 gem 'railway_jp'
@@ -12,69 +23,68 @@ gem 'railway_jp'
 
 ## Usage
 
-### Get all stations
+### Stations
 
-```ruby
-RailwayJp::Station.all
-# => [#<RailwayJp::Station:0x0000000000000000
-#   @address="北海道函館市若松町１２-１３",
-#   @id="1110101",
-#   @latitude="41.773709",
-#   @line_id="11101",
-#   @longitude="140.726413",
-#   @name="函館",
-#   @postcode="040-0063",
-#   @prefecture_id="1">,
-#  #<RailwayJp::Station:0x0000000000000000
-#   @address="函館市亀田本町",
-#   @id="1110102",
-#   @latitude="41.803557",
-#   @line_id="11101",
-#   @longitude="140.733539",
-#   @name="五稜郭",
-#   @postcode="041-0813",
-#   @prefecture_id="1">,
-# ...
-```
-
-### Find a station by id
+`find` takes an id as either an `Integer` or a `String`, and returns `nil` when nothing matches.
 
 ```ruby
 station = RailwayJp::Station.find(2800209)
-# => #<RailwayJp::Station:0x0000000000000000
-#  @address="東京都千代田区丸の内一丁目",
-#  @id="2800209",
-#  @latitude="35.681753",
-#  @line_id="28002",
-#  @longitude="139.764708",
-#  @name="東京",
-#  @postcode="100-0005",
-#  @prefecture_id="13">
+
+station.id             # => "2800209"
+station.name           # => "東京"
+station.line_id        # => "28002"
+station.prefecture_id  # => "13"
+station.postcode       # => "100-0005"
+station.address        # => "東京都千代田区丸の内一丁目"
+station.longitude      # => "139.764708"
+station.latitude       # => "35.681753"
 ```
 
-### Get railway information
+Every attribute is a `String`, coordinates included, so convert them yourself if you need numbers.
+
+`RailwayJp::Station.all` returns every station. The data also covers stations that are no longer in service, and `all` does not filter those out.
+
+### Lines
+
+A station carries its line:
 
 ```ruby
-station = RailwayJp::Station.find(2800209)
-station.line_name
-# => "東京メトロ丸ノ内線"
-station.line
-# => #<RailwayJp::Line:0x0000000000000000
-#  @color="E60012",
-#  @id="28002",
-#  @name="東京メトロ丸ノ内線">
+station.line_name  # => "東京メトロ丸ノ内線"
+
+line = station.line
+line.id     # => "28002"
+line.name   # => "東京メトロ丸ノ内線"
+line.color  # => "E60012"
+```
+
+`color` is a six digit RGB hex string with no leading `#`. It is `nil` for most lines, since only a small part of the data carries one.
+
+`RailwayJp::Line.find` and `RailwayJp::Line.all` behave like their `Station` counterparts.
+
+### Equality
+
+Records compare by class and id, so the same station loaded twice is equal and deduplicates:
+
+```ruby
+a = RailwayJp::Station.find(2800209)
+b = RailwayJp::Station.find(2800209)
+
+a == b          # => true
+[a, b].uniq     # => [a]
 ```
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+Run `bin/setup` to install dependencies, `bundle exec rake` to run the specs and RuboCop, and `bin/console` for a session with the gem loaded.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+## Releasing
+
+Run the [Release workflow](https://github.com/d-mato/railway_jp/actions/workflows/release.yml) from the Actions tab and choose `patch`, `minor` or `major`. It bumps the version, tags it, creates the GitHub release and publishes to RubyGems through trusted publishing.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/railway_jp.
+Bug reports and pull requests are welcome at https://github.com/d-mato/railway_jp.
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+Available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
