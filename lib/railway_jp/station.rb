@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 require 'csv'
 
 module RailwayJp
+  # A station on a railway line.
   class Station
     MAPPINGS = {
       id: 'station_cd',
@@ -10,7 +13,7 @@ module RailwayJp
       postcode: 'post',
       address: 'address',
       longitude: 'lon',
-      latitude: 'lat',
+      latitude: 'lat'
     }.freeze
 
     include RailwayJp::Equality
@@ -29,16 +32,16 @@ module RailwayJp
 
       # @return [CSV::Table]
       def data
-        @data ||= CSV.parse(File.open(File.join(__dir__, '../data','station.csv')), headers: true)
+        @data ||= CSV.parse(File.open(File.join(__dir__, '../data', 'station.csv')), headers: true)
       end
 
       def data_index_by_id
-        @data_index_by_id ||= data.each_with_object({}) { |cur, obj| obj[cur['station_cd']] = cur }
+        @data_index_by_id ||= data.to_h { |cur| [cur['station_cd'], cur] }
       end
     end
 
     private_class_method :new
-    attr_reader *MAPPINGS.keys
+    attr_reader(*MAPPINGS.keys)
 
     def initialize(row)
       MAPPINGS.each do |attr, column_name|

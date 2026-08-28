@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe RailwayJp::Line do
   describe "#{described_class}.all" do
     it do
@@ -6,16 +8,16 @@ RSpec.describe RailwayJp::Line do
   end
 
   describe "#{described_class}.find" do
-    let(:attributes) {
+    let(:attributes) do
       {
         id: '11302',
-        name: 'JR山手線',
+        name: 'JR山手線'
       }
-    }
+    end
 
     context 'find record by integer-id' do
       it do
-        record = described_class.find(11302)
+        record = described_class.find(11_302)
         expect(record).to have_attributes(attributes)
       end
     end

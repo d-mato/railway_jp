@@ -1,11 +1,14 @@
+# frozen_string_literal: true
+
 require 'csv'
 
 module RailwayJp
+  # A railway line, such as a JR or subway line.
   class Line
     MAPPINGS = {
       id: 'line_cd',
       name: 'line_name',
-      color: 'line_color_c',
+      color: 'line_color_c'
     }.freeze
 
     include RailwayJp::Equality
@@ -24,16 +27,16 @@ module RailwayJp
 
       # @return [CSV::Table]
       def data
-        @data ||= CSV.parse(File.open(File.join(__dir__, '../data','line.csv')), headers: true)
+        @data ||= CSV.parse(File.open(File.join(__dir__, '../data', 'line.csv')), headers: true)
       end
 
       def data_index_by_id
-        @data_index_by_id ||= data.each_with_object({}) { |cur, obj| obj[cur['line_cd']] = cur }
+        @data_index_by_id ||= data.to_h { |cur| [cur['line_cd'], cur] }
       end
     end
 
     private_class_method :new
-    attr_reader *MAPPINGS.keys
+    attr_reader(*MAPPINGS.keys)
 
     def initialize(row)
       MAPPINGS.each do |attr, column_name|
