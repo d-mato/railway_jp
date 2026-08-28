@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'lib/railway_jp/version'
 
 Gem::Specification.new do |spec|
@@ -7,7 +9,8 @@ Gem::Specification.new do |spec|
   spec.email         = ['telnetstat@gmail.com']
 
   spec.summary       = 'A library for providing Japanese railways and stations.'
-  spec.description   = 'Provides Japanese railway lines and stations as Ruby objects, backed by bundled CSV data. No database or network access is required.'
+  spec.description   = 'Provides Japanese railway lines and stations as Ruby objects, ' \
+                       'backed by bundled CSV data. No database or network access is required.'
   spec.homepage      = 'https://github.com/d-mato/railway_jp'
   spec.license       = 'MIT'
   spec.required_ruby_version = '>= 3.4.0'
@@ -21,7 +24,7 @@ Gem::Specification.new do |spec|
   gemspec = File.basename(__FILE__)
   spec.files = IO.popen(%w[git ls-files -z], chdir: __dir__, err: IO::NULL) do |ls|
     ls.readlines("\x0", chomp: true).reject do |f|
-      (f == gemspec) || f.start_with?(*%w[bin/ spec/ .github/ .gitignore .rspec Gemfile])
+      (f == gemspec) || f.start_with?(*%w[bin/ spec/ .github/ .gitignore .rspec .rubocop.yml Gemfile])
     end
   end
   spec.bindir        = 'exe'

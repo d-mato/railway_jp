@@ -1,0 +1,16 @@
+# TargetRubyVersion is not set here on purpose: RuboCop reads it from
+# `required_ruby_version` in the gemspec, so the version lives in one place.
+
+inherit_mode:
+  merge:
+    - Exclude
+
+AllCops:
+  NewCops: enable
+  # No RuboCop extensions are in use; stop suggesting them on every run.
+  SuggestExtensions: false
+
+# A describe block covers a whole class, so the default limit does not apply.
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
