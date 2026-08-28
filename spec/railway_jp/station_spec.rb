@@ -36,6 +36,12 @@ RSpec.describe RailwayJp::Station do
     end
   end
 
+  describe 'encoding' do
+    it 'reads names as UTF-8 whatever the default external encoding is' do
+      expect(described_class.find('1130224').name.encoding).to eq Encoding::UTF_8
+    end
+  end
+
   describe '#line' do
     it do
       record = described_class.find('1130224')
