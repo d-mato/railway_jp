@@ -68,5 +68,19 @@ RSpec.describe RailwayJp::Station do
       record2 = described_class.find('1130224')
       expect([record1, record2].uniq.size).to be 1
     end
+
+    it 'is not equal to nil' do
+      expect(described_class.find('1130224')).not_to eq nil
+    end
+
+    it 'is not equal to another type that happens to expose the same id' do
+      lookalike = Struct.new(:id).new('1130224')
+      expect(described_class.find('1130224')).not_to eq lookalike
+    end
+
+    it 'does not raise when an array holding it is searched for nil' do
+      array = [described_class.find('1130224')]
+      expect { array.delete(nil) }.not_to raise_error
+    end
   end
 end
